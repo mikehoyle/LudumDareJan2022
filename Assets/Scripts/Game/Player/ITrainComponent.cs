@@ -3,7 +3,7 @@
 namespace Game.Player {
   public interface ITrainComponent {
     Rigidbody2D Rigidbody { get; }
-    Vector2 BottomAnchor { get; }
+    Transform BottomAnchor { get; }
     
     Quaternion Rotation { get; }
   }

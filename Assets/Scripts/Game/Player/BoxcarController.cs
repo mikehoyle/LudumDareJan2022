@@ -1,26 +1,34 @@
-using System;
-using JetBrains.Annotations;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Game.Player {
   public class BoxcarController : MonoBehaviour, ITrainComponent {
     private Transform _bottomAnchor;
+    private HingeJoint2D _hinge;
     
-    public Vector2 BottomAnchor => _bottomAnchor.position;
+    public Transform BottomAnchor => _bottomAnchor;
     public Quaternion Rotation => transform.rotation;
     public Rigidbody2D Rigidbody { get; private set; }
-    public HingeJoint2D Hinge { get; private set; }
-    public FrictionJoint2D FrictionJoint { get; private set; }
 
     private void Awake() {
       _bottomAnchor = transform.Find("AnchorBottom");
       Rigidbody = GetComponent<Rigidbody2D>();
-      Hinge = GetComponent<HingeJoint2D>();
-      FrictionJoint = GetComponent<FrictionJoint2D>();
+      _hinge = GetComponent<HingeJoint2D>();
 
       // This is at the very front, due to sprite pivot placement
       Rigidbody.centerOfMass = Vector2.zero;
+    }
+
+    public void AttachTo(ITrainComponent parent) {
+      Rigidbody.velocity = Vector2.zero;
+      Rigidbody.angularVelocity = 0f;
+      var targetPosition = parent.BottomAnchor.position;
+      transform.position = targetPosition;
+      Rigidbody.MovePosition(targetPosition);
+      Rigidbody.rotation = parent.Rigidbody.rotation;
+
+      _hinge.connectedBody = parent.Rigidbody;
+      _hinge.connectedAnchor = parent.BottomAnchor.localPosition;
+      Physics2D.SyncTransforms();
     }
   }
 }
