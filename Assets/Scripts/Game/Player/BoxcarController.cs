@@ -22,10 +22,5 @@ namespace Game.Player {
       // This is at the very front, due to sprite pivot placement
       Rigidbody.centerOfMass = Vector2.zero;
     }
-
-    private void FixedUpdate() {
-      // DO NOT SUBMIT
-      // WheeledTravelCorrector.CorrectDrift(Rigidbody);
-    }
   }
 }
