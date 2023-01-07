@@ -12,6 +12,8 @@ namespace Game {
       boxcar.transform.rotation = parent.Rotation;
       boxcar.Hinge.connectedBody = parent.Rigidbody;
       boxcar.Hinge.connectedAnchor = parent.BottomAnchor;
+      boxcar.FrictionJoint.connectedBody = parent.Rigidbody;
+      boxcar.FrictionJoint.connectedAnchor = parent.BottomAnchor;
       return boxcar;
     }
   }
