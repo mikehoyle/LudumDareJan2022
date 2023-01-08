@@ -35,7 +35,7 @@ namespace Game {
           _requestContainers[currentContainer].Item2.texture =
               GetSpriteForType(request.RequestedResource);
           var timeRemainingFmt =
-              $"{(int)request.TimeRemainingSecs / 60}:{(int)request.TimeRemainingSecs % 60}";
+              $"{(int)request.TimeRemainingSecs / 60}:{((int)request.TimeRemainingSecs % 60):00}";
           _requestContainers[currentContainer].Item3.text =
               timeRemainingFmt;
           currentContainer++;

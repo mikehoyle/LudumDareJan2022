@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -24,7 +25,7 @@ namespace Game {
     private float _secsUntilNextRequest;
     private Tilemap _baseTilemap;
     private readonly HashSet<Vector3Int> _collectedCrops = new();
-    private GameObject[] _marketStands;
+    private MarketStand[] _marketStands;
     
     public ResourceRequest[] OutstandingRequests { get; private set; }
 
@@ -34,20 +35,28 @@ namespace Game {
 
     private void Start() {
       LoadEnemies();
-      _marketStands = GameObject.FindGameObjectsWithTag("MarketStand");
+      _marketStands =
+          GameObject.FindGameObjectsWithTag("MarketStand")
+              .Select(x => x.GetComponent<MarketStand>()).ToArray();
       OutstandingRequests = new ResourceRequest[_marketStands.Length];
       _secsUntilNextRequest = requestFrequencySecs;
-      SpawnNewResourceRequest();
+      
+      // Always start with corn
+      SpawnNewResourceRequest(CropType.Corn);
     }
 
     private void Update() { 
       for (int i = 0; i < OutstandingRequests.Length; i++) {
         if (OutstandingRequests[i] != null) {
           OutstandingRequests[i].Update();
+          _marketStands[i].UpdateVisuals(
+              OutstandingRequests[i].RequestedResource, OutstandingRequests[i].TimeRemainingSecs);
           if (OutstandingRequests[i].TimeRemainingSecs <= 0f) {
             OutstandingRequests[i] = null;
             // BIG TODO actually handle a request expiring
           }
+        } else {
+          _marketStands[i].UpdateVisuals(CropType.None, 0f);
         }
       }
 
@@ -59,7 +68,7 @@ namespace Game {
       }
     }
 
-    private void SpawnNewResourceRequest() {
+    private void SpawnNewResourceRequest(CropType cropType = CropType.None) {
       var availableMarkets = new List<int>();
       for (var i = 0; i < _marketStands.Length; i++) {
         if (OutstandingRequests[i] == null) {
@@ -72,7 +81,9 @@ namespace Game {
       }
 
       var requester = Random.Range(0, availableMarkets.Count);
-      var cropType = (CropType)Random.Range(1, (int)CropType.Grape);
+      if (cropType == CropType.None) {
+        cropType = (CropType)Random.Range(1, (int)CropType.Grape);
+      }
       OutstandingRequests[requester] = new ResourceRequest(
           requester, requestSecs, cropType);
     }
@@ -129,8 +140,30 @@ namespace Game {
       } else if (type == CropType.Grape) {
         _baseTilemap.SetTile(coords, emptyGrapeTile);
       }
-      // TODO: crop regeneration
+      // BIG TODO: crop regeneration
       _collectedCrops.Add(_baseTilemap.WorldToCell(position));
+    }
+
+    public ResourceRequest GetRequestForMarketStand(GameObject marketObject) {
+      var marketStand = marketObject.GetComponent<MarketStand>();
+      if (marketStand == null) {
+        return null;
+      }
+      
+      for (int i = 0; i < _marketStands.Length; i++) {
+        if (_marketStands[i] != null && marketStand == _marketStands[i]) {
+          if (OutstandingRequests[i] != null) {
+            return OutstandingRequests[i];
+          }
+        }
+      }
+
+      return null;
+    }
+
+    public void FulfillRequest(ResourceRequest request) {
+      OutstandingRequests[request.RequestingMarketStandIndex] = null;
+      // BIG TODO make this mean something
     }
   }
 }

@@ -33,6 +33,7 @@ namespace Game.Player {
     public Text ContentsIndicatorUI { get; set; }
 
     public bool IsUnattached => _hinge.enabled == false;
+    public bool IsFull => ContentsCount == fullLoadSize;
 
     private void Awake() {
       BottomAnchor = transform.Find("AnchorBottom");
@@ -118,6 +119,11 @@ namespace Game.Player {
 
       ContentsCount++;
       return true;
+    }
+
+    public void Empty() {
+      Contents = CropType.None;
+      ContentsCount = 0;
     }
   }
 }
