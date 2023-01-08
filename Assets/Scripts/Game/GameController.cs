@@ -60,6 +60,10 @@ namespace Game {
         _baseTilemap.SetTile(coords, emptyPumpkinTile); 
       } else if (type == CropType.Wheat) {
         _baseTilemap.SetTile(coords, emptyWheatTile); 
+      } else if (type == CropType.Tomato) {
+        _baseTilemap.SetTile(coords, emptyTomatoTile);
+      } else if (type == CropType.Grape) {
+        _baseTilemap.SetTile(coords, emptyGrapeTile);
       }
       // TODO: crop regeneration
       _collectedCrops.Add(_baseTilemap.WorldToCell(position));
