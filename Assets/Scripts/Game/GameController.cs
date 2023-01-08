@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -14,8 +15,6 @@ namespace Game {
     [SerializeField] private Tile emptyCornTile;
     [SerializeField] private Tile emptyTomatoTile;
     [SerializeField] private Tile emptyGrapeTile;
-    [SerializeField] private GameObject enemyFarmer;
-    [SerializeField] private GameObject enemyDog;
 
     private Tilemap _baseTilemap;
     private HashSet<Vector3Int> _collectedCrops = new();
@@ -26,8 +25,14 @@ namespace Game {
 
     private void Start()
     {
-      Instantiate(enemyFarmer);
-      Instantiate(enemyDog);
+
+
+      string farmerPath = "Assets/Prefabs/EnemyFarmer.prefab";
+      string dogPath = "Assets/Prefabs/EnemyDog.prefab";
+      var farmerPrefab = PrefabUtility.LoadPrefabContents(farmerPath);
+      var dogPrefab = PrefabUtility.LoadPrefabContents(dogPath);
+      Instantiate(farmerPrefab);
+      Instantiate(dogPrefab);
     }
 
     public CropType GetCropAtWorldPosition(Vector3 position) {
