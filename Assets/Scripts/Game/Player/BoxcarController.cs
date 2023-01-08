@@ -45,7 +45,8 @@ namespace Game.Player {
     }
 
     private void Update() {
-      ContentsIndicatorUI.text = $"{ContentsCount}/{fullLoadSize}";
+      ContentsIndicatorUI.text = ContentsCount > 0 ? $"{ContentsCount}/{fullLoadSize}" : "";
+
       if (ContentsCount == 0) {
         ContentsIndicatorUI.color = emptyColor;
       } else if (ContentsCount < fullLoadSize) {
