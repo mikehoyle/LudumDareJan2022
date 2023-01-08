@@ -366,6 +366,7 @@ MonoBehaviour:
   wheatSprite: {fileID: 252251462552618782, guid: 48eec77c6edfbad4b994b747f90e15ea, type: 3}
   pumpkinSprite: {fileID: 7010913672573627198, guid: 28df604482a1d45469ba22865efbf433, type: 3}
   tomatoSprite: {fileID: -8603200303125254673, guid: 81dbf873907b2344f81469e06215e534, type: 3}
+  grapesSprite: {fileID: -6803255104923912451, guid: f81fc94622e60794b91933a3d2b52b51, type: 3}
 --- !u!70 &7920657912809575677
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

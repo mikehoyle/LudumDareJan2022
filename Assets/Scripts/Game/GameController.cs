@@ -7,29 +7,19 @@ namespace Game {
     [SerializeField] private Tile wheatTile;
     [SerializeField] private Tile pumpkinTile;
     [SerializeField] private Tile cornTile;
+    [SerializeField] private Tile tomatoTile;
+    [SerializeField] private Tile grapeTile;
     [SerializeField] private Tile emptyWheatTile;
     [SerializeField] private Tile emptyPumpkinTile;
     [SerializeField] private Tile emptyCornTile;
+    [SerializeField] private Tile emptyTomatoTile;
+    [SerializeField] private Tile emptyGrapeTile;
 
     private Tilemap _baseTilemap;
     private HashSet<Vector3Int> _collectedCrops = new();
 
     private void Awake() {
       _baseTilemap = GameObject.FindWithTag("BaseTilemap").GetComponent<Tilemap>();
-    }
-
-    public Tile GetTileForType(CropType cropType) {
-      switch (cropType) {
-        case CropType.Corn:
-          return cornTile;
-        case CropType.Pumpkins:
-          return pumpkinTile;
-        case CropType.Wheat:
-          return wheatTile;
-        case CropType.None:
-        default:
-          return null;
-      }
     }
 
     public CropType GetCropAtWorldPosition(Vector3 position) {
@@ -49,6 +39,14 @@ namespace Game {
 
       if (tile == cornTile) {
         return CropType.Corn;
+      }
+
+      if (tile == tomatoTile) {
+        return CropType.Tomato;
+      }
+      
+      if (tile == grapeTile) {
+        return CropType.Grape;
       }
 
       return CropType.None;
