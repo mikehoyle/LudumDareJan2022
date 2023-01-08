@@ -16,6 +16,8 @@ namespace Game {
     private Transform _bottomAnchor;
     private GameController _gameController;
     private List<BoxcarController> _childCars = new();
+    private CircleCollider2D _interactionCollider;
+    private ParticleSystem _collectionParticles;
 
     public Rigidbody2D Rigidbody { get; private set; }
     public Transform BottomAnchor => _bottomAnchor;
@@ -25,6 +27,8 @@ namespace Game {
       Rigidbody = GetComponent<Rigidbody2D>();
       _bottomAnchor = transform.Find("AnchorBottom");
       _gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
+      _interactionCollider = GetComponentInChildren<CircleCollider2D>();
+      _collectionParticles = GetComponentInChildren<ParticleSystem>();
       
       // Start with one cart
       CreateBoxcar();
@@ -42,6 +46,7 @@ namespace Game {
         foreach (var car in _childCars) {
           if (car.TryCollectCrop(cropType)) {
             _gameController.CollectCropAtWorldPosition(transform.position, cropType);
+            _collectionParticles.Play();
             return;
           }
         }
@@ -71,6 +76,15 @@ namespace Game {
 
       if (Input.GetKeyDown(KeyCode.E)) {
         // TODO determine if there's a boxcar nearby to pickup.
+        var overlappingItems = Physics2D.OverlapCircleAll(
+            _interactionCollider.transform.position, _interactionCollider.radius);
+        foreach (var collider in overlappingItems) {
+          if (collider.CompareTag("Boxcar")
+              && collider.gameObject.GetComponent<BoxcarController>().IsUnattached) {
+            Destroy(collider.gameObject);
+            CreateBoxcar();
+          }
+        }
       }
     }
 

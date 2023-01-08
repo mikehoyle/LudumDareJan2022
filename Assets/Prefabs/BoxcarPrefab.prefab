@@ -200,7 +200,7 @@ GameObject:
   - component: {fileID: 5801946024925393482}
   m_Layer: 0
   m_Name: BoxcarPrefab
-  m_TagString: Untagged
+  m_TagString: Boxcar
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -289,7 +289,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fullLoadSize: 20
   emptyColor: {r: 0, g: 0, b: 0, a: 1}
-  partialColor: {r: 0.6509434, g: 0, b: 0, a: 1}
+  partialColor: {r: 0.4528302, g: 0.019935878, b: 0.019935878, a: 1}
   fullColor: {r: 0.058480117, g: 0.6226415, b: 0, a: 1}
   emptySprite: {fileID: -3066893102211708395, guid: a1714ee122ad313468dd00a97f1ed100, type: 3}
   cornSprite: {fileID: 4672769802726572968, guid: 5d609b7d04fd6fc45a3b6494a16c1622, type: 3}

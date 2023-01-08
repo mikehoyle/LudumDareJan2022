@@ -32,6 +32,8 @@ namespace Game.Player {
 
     public Text ContentsIndicatorUI { get; set; }
 
+    public bool IsUnattached => _hinge.enabled == false;
+
     private void Awake() {
       BottomAnchor = transform.Find("AnchorBottom");
       Rigidbody = GetComponent<Rigidbody2D>();
@@ -47,13 +49,14 @@ namespace Game.Player {
     }
 
     private void Update() {
-      if (_hinge.enabled) {
-        ContentsIndicatorUI.text = $"{ContentsCount}/{fullLoadSize}";
-      } else {
-        ContentsIndicatorUI.text = "PICK\nME UP";
+      if (IsUnattached) {
+        ContentsIndicatorUI.text = "[E] PICK\nME UP";
+        ContentsIndicatorUI.color = partialColor;
         Rigidbody.bodyType = RigidbodyType2D.Static;
+        return;
       }
-
+      
+      ContentsIndicatorUI.text = $"{ContentsCount}/{fullLoadSize}";
       if (ContentsCount == 0) {
         ContentsIndicatorUI.color = emptyColor;
       } else if (ContentsCount < fullLoadSize) {
