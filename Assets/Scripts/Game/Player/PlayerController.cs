@@ -84,6 +84,23 @@ namespace Game {
             Destroy(collider.gameObject);
             CreateBoxcar();
           }
+
+          if (collider.CompareTag("MarketStand")) {
+            TryDeliverGoods(collider.gameObject);
+          }
+        }
+      }
+    }
+
+    private void TryDeliverGoods(GameObject targetMarket) {
+      var request = _gameController.GetRequestForMarketStand(targetMarket);
+      if (request != null) {
+        foreach (var boxcar in _childCars) {
+          if (boxcar.IsFull && boxcar.Contents == request.RequestedResource) {
+            _gameController.FulfillRequest(request);
+            boxcar.Empty();
+            return;
+          }
         }
       }
     }
