@@ -4,5 +4,6 @@
     Wheat,
     Pumpkins,
     Corn,
+    Tomato,
   }
 }
