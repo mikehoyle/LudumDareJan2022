@@ -14,12 +14,20 @@ namespace Game {
     [SerializeField] private Tile emptyCornTile;
     [SerializeField] private Tile emptyTomatoTile;
     [SerializeField] private Tile emptyGrapeTile;
+    [SerializeField] private GameObject enemyFarmer;
+    [SerializeField] private GameObject enemyDog;
 
     private Tilemap _baseTilemap;
     private HashSet<Vector3Int> _collectedCrops = new();
 
     private void Awake() {
       _baseTilemap = GameObject.FindWithTag("BaseTilemap").GetComponent<Tilemap>();
+    }
+
+    private void Start()
+    {
+      Instantiate(enemyFarmer);
+      Instantiate(enemyDog);
     }
 
     public CropType GetCropAtWorldPosition(Vector3 position) {
