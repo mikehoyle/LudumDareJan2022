@@ -7,6 +7,7 @@ TagManager:
   - BaseTilemap
   - Boxcar
   - MarketStand
+  - RequestContainer
   layers:
   - Default
   - TransparentFX

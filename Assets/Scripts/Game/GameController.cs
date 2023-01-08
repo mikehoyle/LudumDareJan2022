@@ -25,7 +25,8 @@ namespace Game {
     private Tilemap _baseTilemap;
     private readonly HashSet<Vector3Int> _collectedCrops = new();
     private GameObject[] _marketStands;
-    private ResourceRequest[] _outstandingRequests;
+    
+    public ResourceRequest[] OutstandingRequests { get; private set; }
 
     private void Awake() {
       _baseTilemap = GameObject.FindWithTag("BaseTilemap").GetComponent<Tilemap>();
@@ -34,17 +35,19 @@ namespace Game {
     private void Start() {
       LoadEnemies();
       _marketStands = GameObject.FindGameObjectsWithTag("MarketStand");
-      _outstandingRequests = new ResourceRequest[_marketStands.Length];
+      OutstandingRequests = new ResourceRequest[_marketStands.Length];
       _secsUntilNextRequest = requestFrequencySecs;
       SpawnNewResourceRequest();
     }
 
     private void Update() { 
-      for (int i = 0; i < _outstandingRequests.Length; i++) {
-        _outstandingRequests[i].Update();
-        if (_outstandingRequests[i].TimeRemainingSecs <= 0f) {
-          _outstandingRequests[i] = null;
-          // BIG TODO actually handle a request expiring
+      for (int i = 0; i < OutstandingRequests.Length; i++) {
+        if (OutstandingRequests[i] != null) {
+          OutstandingRequests[i].Update();
+          if (OutstandingRequests[i].TimeRemainingSecs <= 0f) {
+            OutstandingRequests[i] = null;
+            // BIG TODO actually handle a request expiring
+          }
         }
       }
 
@@ -59,7 +62,7 @@ namespace Game {
     private void SpawnNewResourceRequest() {
       var availableMarkets = new List<int>();
       for (var i = 0; i < _marketStands.Length; i++) {
-        if (_outstandingRequests[i] == null) {
+        if (OutstandingRequests[i] == null) {
           availableMarkets.Add(i);
         }
       }
@@ -70,7 +73,7 @@ namespace Game {
 
       var requester = Random.Range(0, availableMarkets.Count);
       var cropType = (CropType)Random.Range(1, (int)CropType.Grape);
-      _outstandingRequests[requester] = new ResourceRequest(
+      OutstandingRequests[requester] = new ResourceRequest(
           requester, requestSecs, cropType);
     }
 
