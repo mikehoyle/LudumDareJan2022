@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 188955dbc42ee4e4f9ced4f0ece41837
+guid: 558ba83f5f860624db7e76a88f05b63c
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -105,26 +105,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Fence 20
+      name: Rock 20
       rect:
         serializedVersion: 2
         x: 1
         y: 1
-        width: 13
-        height: 37
-      alignment: 9
-      pivot: {x: 0.53846157, y: 0.4864865}
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
-      physicsShape:
-      - - {x: -1.5, y: -16.5}
-        - {x: -1.5, y: 17.5}
-        - {x: 2.5, y: 17.5}
-        - {x: 2.5, y: -16.5}
-      tessellationDetail: 0
+      physicsShape: []
+      tessellationDetail: -1
       bones: []
-      spriteID: 73a5fe3dd14d8f9c0800000000000000
-      internalID: -3893128653286974921
+      spriteID: e3452d9bd12d48e50800000000000000
+      internalID: 6810799561604486206
       vertices: []
       indices: 
       edges: []
@@ -140,7 +136,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Fence 20: -3893128653286974921
+      Rock 20: 6810799561604486206
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
