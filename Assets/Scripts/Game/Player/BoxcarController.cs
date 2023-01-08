@@ -17,12 +17,12 @@ namespace Game.Player {
     [SerializeField] private Sprite pumpkinSprite;
     [SerializeField] private Sprite tomatoSprite;
     [SerializeField] private Sprite grapesSprite;
-    
-    private Transform _bottomAnchor;
+
     private HingeJoint2D _hinge;
     private SpriteRenderer _spriteRenderer;
 
-    public Transform BottomAnchor => _bottomAnchor;
+    public Transform BottomAnchor { get; private set; }
+
     public Quaternion Rotation => transform.rotation;
     public Rigidbody2D Rigidbody { get; private set; }
 
@@ -32,7 +32,7 @@ namespace Game.Player {
     public Text ContentsIndicatorUI { get; set; }
 
     private void Awake() {
-      _bottomAnchor = transform.Find("AnchorBottom");
+      BottomAnchor = transform.Find("AnchorBottom");
       Rigidbody = GetComponent<Rigidbody2D>();
       _hinge = GetComponent<HingeJoint2D>();
       _spriteRenderer = GetComponent<SpriteRenderer>();
@@ -77,9 +77,15 @@ namespace Game.Player {
       transform.position = targetPosition;
       Rigidbody.MovePosition(targetPosition);
       Rigidbody.rotation = parent.Rigidbody.rotation;
+      Rigidbody.MoveRotation(parent.Rigidbody.rotation);
 
       _hinge.connectedBody = parent.Rigidbody;
       _hinge.connectedAnchor = parent.BottomAnchor.localPosition;
+      var distanceJoint = GetComponent<DistanceJoint2D>();
+      distanceJoint.connectedBody = parent.Rigidbody;
+      distanceJoint.connectedAnchor = parent.BottomAnchor.localPosition;
+      distanceJoint.distance = 0;
+      Physics2D.IgnoreCollision(parent.Rigidbody.GetComponent<Collider2D>(), GetComponent<Collider2D>());
       Physics2D.SyncTransforms();
     }
 

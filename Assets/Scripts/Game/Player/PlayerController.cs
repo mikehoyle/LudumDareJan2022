@@ -58,9 +58,11 @@ namespace Game {
       }
       
       if (verticalAxis is > 0.1f or < -0.1f) {
-        // Acceleration
-        var direction = verticalAxis > 0 ? 1 : -1;
-        var speed = direction * acceleration * Time.deltaTime;
+        var speed = verticalAxis switch {
+            > 0 => acceleration,
+            _ => reverseAcceleration * -1,
+        };
+        
         Rigidbody.AddRelativeForce(Vector2.up * speed);
       }
 

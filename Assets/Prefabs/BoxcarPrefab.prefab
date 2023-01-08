@@ -46,7 +46,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 0.5
-  m_LinearDrag: 1
+  m_LinearDrag: 2
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -264,9 +264,10 @@ GameObject:
   - component: {fileID: 4858898972071508581}
   - component: {fileID: 4858898972071508580}
   - component: {fileID: 4858898972071508586}
-  - component: {fileID: 7920657912809575677}
   - component: {fileID: 4858898972071508585}
   - component: {fileID: 4858898972071508584}
+  - component: {fileID: 2271973597894369435}
+  - component: {fileID: 5801946024925393482}
   m_Layer: 0
   m_Name: BoxcarPrefab
   m_TagString: Untagged
@@ -367,22 +368,6 @@ MonoBehaviour:
   pumpkinSprite: {fileID: 7010913672573627198, guid: 28df604482a1d45469ba22865efbf433, type: 3}
   tomatoSprite: {fileID: -8603200303125254673, guid: 81dbf873907b2344f81469e06215e534, type: 3}
   grapesSprite: {fileID: -6803255104923912451, guid: f81fc94622e60794b91933a3d2b52b51, type: 3}
---- !u!70 &7920657912809575677
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4858898972071508583}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.007499635, y: -0.98500067}
-  m_Size: {x: 1.1150063, y: 1.8500072}
-  m_Direction: 0
 --- !u!50 &4858898972071508585
 Rigidbody2D:
   serializedVersion: 4
@@ -402,7 +387,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!233 &4858898972071508584
 HingeJoint2D:
@@ -418,7 +403,7 @@ HingeJoint2D:
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 0
-  m_Anchor: {x: 0, y: 0}
+  m_Anchor: {x: 0, y: 0.06}
   m_ConnectedAnchor: {x: 0, y: -2}
   m_UseMotor: 0
   m_Motor:
@@ -428,6 +413,51 @@ HingeJoint2D:
   m_AngleLimits:
     m_LowerAngle: -45
     m_UpperAngle: 45
+--- !u!61 &2271973597894369435
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4858898972071508583}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: -1}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 1}
+    oldSize: {x: 1.25, y: 2}
+    newSize: {x: 1.25, y: 2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.9316733, y: 1.6565194}
+  m_EdgeRadius: 0
+--- !u!232 &5801946024925393482
+DistanceJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4858898972071508583}
+  m_Enabled: 1
+  serializedVersion: 4
+  m_EnableCollision: 0
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: 0, y: 0.06}
+  m_ConnectedAnchor: {x: 0, y: -2}
+  m_AutoConfigureDistance: 0
+  m_Distance: 2.06
+  m_MaxDistanceOnly: 0
 --- !u!1 &4858898972459859270
 GameObject:
   m_ObjectHideFlags: 0
