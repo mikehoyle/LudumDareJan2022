@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Random = UnityEngine.Random;
 
 namespace Game {
   public class GameController : MonoBehaviour {
@@ -16,17 +17,64 @@ namespace Game {
     [SerializeField] private Tile emptyTomatoTile;
     [SerializeField] private Tile emptyGrapeTile;
 
+    // TODO: these should be random or scale with time
+    [SerializeField] private int requestSecs;
+    [SerializeField] private int requestFrequencySecs;
+
+    private float _secsUntilNextRequest;
     private Tilemap _baseTilemap;
-    private HashSet<Vector3Int> _collectedCrops = new();
+    private readonly HashSet<Vector3Int> _collectedCrops = new();
+    private GameObject[] _marketStands;
+    private ResourceRequest[] _outstandingRequests;
 
     private void Awake() {
       _baseTilemap = GameObject.FindWithTag("BaseTilemap").GetComponent<Tilemap>();
     }
 
-    private void Start()
-    {
+    private void Start() {
+      LoadEnemies();
+      _marketStands = GameObject.FindGameObjectsWithTag("MarketStand");
+      _outstandingRequests = new ResourceRequest[_marketStands.Length];
+      _secsUntilNextRequest = requestFrequencySecs;
+      SpawnNewResourceRequest();
+    }
 
+    private void Update() { 
+      for (int i = 0; i < _outstandingRequests.Length; i++) {
+        _outstandingRequests[i].Update();
+        if (_outstandingRequests[i].TimeRemainingSecs <= 0f) {
+          _outstandingRequests[i] = null;
+          // BIG TODO actually handle a request expiring
+        }
+      }
 
+      _secsUntilNextRequest -= Time.deltaTime;
+      if (_secsUntilNextRequest <= 0) {
+        // TODO game over here if too many requests?
+        SpawnNewResourceRequest();
+        _secsUntilNextRequest = requestFrequencySecs;
+      }
+    }
+
+    private void SpawnNewResourceRequest() {
+      var availableMarkets = new List<int>();
+      for (var i = 0; i < _marketStands.Length; i++) {
+        if (_outstandingRequests[i] == null) {
+          availableMarkets.Add(i);
+        }
+      }
+
+      if (availableMarkets.Count == 0) {
+        return;
+      }
+
+      var requester = Random.Range(0, availableMarkets.Count);
+      var cropType = (CropType)Random.Range(1, (int)CropType.Grape);
+      _outstandingRequests[requester] = new ResourceRequest(
+          requester, requestSecs, cropType);
+    }
+
+    private static void LoadEnemies() {
       string farmerPath = "Assets/Prefabs/EnemyFarmer.prefab";
       string dogPath = "Assets/Prefabs/EnemyDog.prefab";
       var farmerPrefab = PrefabUtility.LoadPrefabContents(farmerPath);

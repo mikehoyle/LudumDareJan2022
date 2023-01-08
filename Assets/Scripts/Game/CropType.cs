@@ -1,10 +1,10 @@
 ﻿namespace Game {
   public enum CropType {
-    None,
-    Wheat,
-    Pumpkins,
-    Corn,
-    Tomato,
-    Grape,
+    None = 0,
+    Wheat = 1,
+    Pumpkins = 2,
+    Corn = 3,
+    Tomato = 4,
+    Grape = 5,
   }
 }
