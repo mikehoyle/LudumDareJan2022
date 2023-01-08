@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using Game.Player;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace Game {
   public class PlayerController : MonoBehaviour, ITrainComponent {
     [SerializeField] private float turnSpeed;
     [SerializeField] private float maxTurnRadius;
     [SerializeField] private float acceleration;
+    [SerializeField] private float reverseAcceleration;
     [SerializeField] private GameObject boxcarPrefab;
     
     private Transform _bottomAnchor;
     private GameController _gameController;
-    private List<BoxcarController> _childCars = new List<BoxcarController>();
+    private List<BoxcarController> _childCars = new();
 
     public Rigidbody2D Rigidbody { get; private set; }
     public Transform BottomAnchor => _bottomAnchor;
@@ -27,6 +29,20 @@ namespace Game {
 
     void Update() {
       HandleInput();
+      MaybeGatherResource();
+    }
+
+    private void MaybeGatherResource() {
+      var cropType = _gameController.GetCropAtWorldPosition(transform.position);
+      if (cropType != CropType.None) {
+        // Attempt to collect crop
+        foreach (var car in _childCars) {
+          if (car.TryCollectCrop(cropType)) {
+            _gameController.CollectCropAtWorldPosition(transform.position, cropType);
+            return;
+          }
+        }
+      }
     }
 
     private void HandleInput() {
