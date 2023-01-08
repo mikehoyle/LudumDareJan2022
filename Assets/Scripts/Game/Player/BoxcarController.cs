@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,7 @@ namespace Game.Player {
     [SerializeField] private Sprite wheatSprite;
     [SerializeField] private Sprite pumpkinSprite;
     [SerializeField] private Sprite tomatoSprite;
+    [SerializeField] private Sprite grapesSprite;
     
     private Transform _bottomAnchor;
     private HingeJoint2D _hinge;
@@ -61,6 +63,7 @@ namespace Game.Player {
           CropType.Pumpkins => pumpkinSprite,
           CropType.Tomato => tomatoSprite,
           CropType.Wheat => wheatSprite,
+          CropType.Grape => grapesSprite,
           _ => emptySprite
       };
 
