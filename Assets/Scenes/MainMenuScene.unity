@@ -203,10 +203,10 @@ Camera:
   m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
-    x: 0.03065884
-    y: 0
-    width: 0.93835616
-    height: 1
+    x: 0
+    y: 0.54208755
+    width: 0.3951262
+    height: 0.50953984
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 34
@@ -447,7 +447,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Game Title
+  m_Text: Harvest Heist
 --- !u!222 &944982176
 CanvasRenderer:
   m_ObjectHideFlags: 0
