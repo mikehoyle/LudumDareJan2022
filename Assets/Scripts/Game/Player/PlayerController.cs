@@ -25,6 +25,9 @@ namespace Game {
       Rigidbody = GetComponent<Rigidbody2D>();
       _bottomAnchor = transform.Find("AnchorBottom");
       _gameController = GameObject.FindWithTag("GameController").GetComponent<GameController>();
+      
+      // Start with one cart
+      CreateBoxcar();
     }
 
     void Update() {
@@ -68,7 +71,6 @@ namespace Game {
 
       if (Input.GetKeyDown(KeyCode.E)) {
         // TODO determine if there's a boxcar nearby to pickup.
-        CreateBoxcar();
       }
     }
 

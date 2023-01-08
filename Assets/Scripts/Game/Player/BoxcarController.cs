@@ -20,6 +20,7 @@ namespace Game.Player {
 
     private HingeJoint2D _hinge;
     private SpriteRenderer _spriteRenderer;
+    private DistanceJoint2D _distanceJoint;
 
     public Transform BottomAnchor { get; private set; }
 
@@ -35,6 +36,7 @@ namespace Game.Player {
       BottomAnchor = transform.Find("AnchorBottom");
       Rigidbody = GetComponent<Rigidbody2D>();
       _hinge = GetComponent<HingeJoint2D>();
+      _distanceJoint = GetComponent<DistanceJoint2D>();
       _spriteRenderer = GetComponent<SpriteRenderer>();
 
       GetComponentInChildren<Canvas>().worldCamera = Camera.main;
@@ -45,7 +47,12 @@ namespace Game.Player {
     }
 
     private void Update() {
-      ContentsIndicatorUI.text = ContentsCount > 0 ? $"{ContentsCount}/{fullLoadSize}" : "";
+      if (_hinge.enabled) {
+        ContentsIndicatorUI.text = $"{ContentsCount}/{fullLoadSize}";
+      } else {
+        ContentsIndicatorUI.text = "PICK\nME UP";
+        Rigidbody.bodyType = RigidbodyType2D.Static;
+      }
 
       if (ContentsCount == 0) {
         ContentsIndicatorUI.color = emptyColor;
@@ -72,6 +79,7 @@ namespace Game.Player {
     }
 
     public void AttachTo(ITrainComponent parent) {
+      Rigidbody.bodyType = RigidbodyType2D.Dynamic;
       Rigidbody.velocity = Vector2.zero;
       Rigidbody.angularVelocity = 0f;
       var targetPosition = parent.BottomAnchor.position;
@@ -80,12 +88,13 @@ namespace Game.Player {
       Rigidbody.rotation = parent.Rigidbody.rotation;
       Rigidbody.MoveRotation(parent.Rigidbody.rotation);
 
+      _hinge.enabled = true;
+      _distanceJoint.enabled = true;
       _hinge.connectedBody = parent.Rigidbody;
       _hinge.connectedAnchor = parent.BottomAnchor.localPosition;
-      var distanceJoint = GetComponent<DistanceJoint2D>();
-      distanceJoint.connectedBody = parent.Rigidbody;
-      distanceJoint.connectedAnchor = parent.BottomAnchor.localPosition;
-      distanceJoint.distance = 0;
+      _distanceJoint.connectedBody = parent.Rigidbody;
+      _distanceJoint.connectedAnchor = parent.BottomAnchor.localPosition;
+      _distanceJoint.distance = 0;
       Physics2D.IgnoreCollision(parent.Rigidbody.GetComponent<Collider2D>(), GetComponent<Collider2D>());
       Physics2D.SyncTransforms();
     }

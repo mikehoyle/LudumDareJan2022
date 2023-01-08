@@ -1,20 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
   public Transform target;
   public float smoothing;
-  // Start is called before the first frame update
-  void Start()
-  {
-        
+  
+  void Start() {
+    var mainCamera = GetComponent<Camera>();
+    
+    // Sort front-to-back for proper layering.
+    mainCamera.transparencySortMode = TransparencySortMode.CustomAxis;
+    mainCamera.transparencySortAxis = Vector3.up;
   }
 
-  // Update is called once per frame
-  void LateUpdate()
-  {
+  void LateUpdate() {
     if (transform.position != target.position)
     {
       Vector3 targetPosition = new Vector3(target.position.x, target.position.y, transform.position.z);
