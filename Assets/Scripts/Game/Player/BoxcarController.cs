@@ -9,9 +9,17 @@ namespace Game.Player {
     [SerializeField] private Color partialColor;
     [SerializeField] private Color fullColor;
     
+    // Sprites
+    [SerializeField] private Sprite emptySprite;
+    [SerializeField] private Sprite cornSprite;
+    [SerializeField] private Sprite wheatSprite;
+    [SerializeField] private Sprite pumpkinSprite;
+    [SerializeField] private Sprite tomatoSprite;
+    
     private Transform _bottomAnchor;
     private HingeJoint2D _hinge;
-    
+    private SpriteRenderer _spriteRenderer;
+
     public Transform BottomAnchor => _bottomAnchor;
     public Quaternion Rotation => transform.rotation;
     public Rigidbody2D Rigidbody { get; private set; }
@@ -25,6 +33,7 @@ namespace Game.Player {
       _bottomAnchor = transform.Find("AnchorBottom");
       Rigidbody = GetComponent<Rigidbody2D>();
       _hinge = GetComponent<HingeJoint2D>();
+      _spriteRenderer = GetComponent<SpriteRenderer>();
 
       GetComponentInChildren<Canvas>().worldCamera = Camera.main;
       ContentsIndicatorUI = GetComponentInChildren<Text>();
@@ -42,6 +51,20 @@ namespace Game.Player {
       } else {
         ContentsIndicatorUI.color = fullColor;
       }
+      
+      UpdateSprite();
+    }
+
+    private void UpdateSprite() {
+      var sprite = Contents switch {
+          CropType.Corn => cornSprite,
+          CropType.Pumpkins => pumpkinSprite,
+          CropType.Tomato => tomatoSprite,
+          CropType.Wheat => wheatSprite,
+          _ => emptySprite
+      };
+
+      _spriteRenderer.sprite = sprite;
     }
 
     public void AttachTo(ITrainComponent parent) {

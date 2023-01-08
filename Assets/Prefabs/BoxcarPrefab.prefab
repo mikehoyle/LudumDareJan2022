@@ -198,17 +198,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3261999545498604912}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.1, y: 0.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4210523190699214167}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 1.03, y: -0.22}
   m_SizeDelta: {x: 50, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1387616286572416804
@@ -361,6 +361,11 @@ MonoBehaviour:
   emptyColor: {r: 0, g: 0, b: 0, a: 1}
   partialColor: {r: 0.6509434, g: 0, b: 0, a: 1}
   fullColor: {r: 0.058480117, g: 0.6226415, b: 0, a: 1}
+  emptySprite: {fileID: -3066893102211708395, guid: a1714ee122ad313468dd00a97f1ed100, type: 3}
+  cornSprite: {fileID: 4672769802726572968, guid: 5d609b7d04fd6fc45a3b6494a16c1622, type: 3}
+  wheatSprite: {fileID: 252251462552618782, guid: 48eec77c6edfbad4b994b747f90e15ea, type: 3}
+  pumpkinSprite: {fileID: 7010913672573627198, guid: 28df604482a1d45469ba22865efbf433, type: 3}
+  tomatoSprite: {fileID: -8603200303125254673, guid: 81dbf873907b2344f81469e06215e534, type: 3}
 --- !u!70 &7920657912809575677
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
