@@ -27,8 +27,8 @@ namespace Game.Player {
     public Quaternion Rotation => transform.rotation;
     public Rigidbody2D Rigidbody { get; private set; }
 
-    public CropType Contents { get; private set; } = CropType.None;
-    public uint ContentsCount { get; private set; } = 0;
+    public CropType Contents { get; set; } = CropType.None;
+    public uint ContentsCount { get; set; } = 0;
 
     public Text ContentsIndicatorUI { get; set; }
 

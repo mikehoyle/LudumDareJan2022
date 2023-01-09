@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Game.Player;
+using UnityEditor.Experimental;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -88,6 +89,18 @@ namespace Game {
           if (collider.CompareTag("MarketStand")) {
             TryDeliverGoods(collider.gameObject);
           }
+        }
+      }
+
+      if (Input.GetKeyDown(KeyCode.Q)) {
+        // Dump items
+        (uint count, CropType type) currentContents = (0, CropType.None);
+        foreach (var boxcar in _childCars) {
+          var nextContents = boxcar.ContentsCount;
+          var nextType = boxcar.Contents;
+          boxcar.ContentsCount = currentContents.count;
+          boxcar.Contents = currentContents.type;
+          currentContents = (nextContents, nextType);
         }
       }
     }

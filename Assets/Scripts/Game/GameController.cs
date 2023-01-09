@@ -84,8 +84,8 @@ namespace Game {
       if (cropType == CropType.None) {
         cropType = (CropType)Random.Range(1, (int)CropType.Grape);
       }
-      OutstandingRequests[requester] = new ResourceRequest(
-          requester, requestSecs, cropType);
+      OutstandingRequests[availableMarkets[requester]] = new ResourceRequest(
+          availableMarkets[requester], requestSecs, cropType);
     }
 
     private static void LoadEnemies() {
