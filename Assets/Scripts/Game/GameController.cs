@@ -19,6 +19,10 @@ namespace Game {
     [SerializeField] private Tile emptyTomatoTile;
     [SerializeField] private Tile emptyGrapeTile;
 
+    [SerializeField] private GameObject farmerPrefab;
+    [SerializeField] private GameObject dogPrefab;
+    
+
     // TODO: these should be random or scale with time
     [SerializeField] private int requestSecs;
     [SerializeField] private int requestFrequencySecs;
@@ -122,13 +126,10 @@ namespace Game {
           availableMarkets[requester], requestSecs, cropType);
     }
 
-    private static void LoadEnemies() {
-      string farmerPath = "Assets/Prefabs/EnemyFarmer.prefab";
-      string dogPath = "Assets/Prefabs/EnemyDog.prefab";
-      var farmerPrefab = PrefabUtility.LoadPrefabContents(farmerPath);
-      var dogPrefab = PrefabUtility.LoadPrefabContents(dogPath);
+    private void LoadEnemies() {
       Instantiate(farmerPrefab);
-      Instantiate(dogPrefab);
+      // Dog isn't working well enough to include for now
+      //Instantiate(dogPrefab);
     }
 
     public CropType GetCropAtWorldPosition(Vector3 position) {
