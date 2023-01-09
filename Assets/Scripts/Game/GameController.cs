@@ -21,12 +21,14 @@ namespace Game {
     // TODO: these should be random or scale with time
     [SerializeField] private int requestSecs;
     [SerializeField] private int requestFrequencySecs;
+    [SerializeField] private float cropRegrowthTimeSecs;
 
     private float _secsUntilNextRequest;
     private Tilemap _baseTilemap;
-    private readonly HashSet<Vector3Int> _collectedCrops = new();
+    // Maps growing crops to growth time remaining
+    private readonly Dictionary<Vector3Int, float> _regrowingCrops = new();
     private MarketStand[] _marketStands;
-    
+
     public ResourceRequest[] OutstandingRequests { get; private set; }
 
     private void Awake() {
@@ -45,12 +47,39 @@ namespace Game {
       SpawnNewResourceRequest(CropType.Corn);
     }
 
-    private void Update() { 
+    private void Update() {
+      UpdateResourceRequests();
+      MaybeAddResourceRequest();
+      UpdateCropRegrowth();
+    }
+
+    private void UpdateCropRegrowth() {
+      var growingCropKeys = new List<Vector3Int>(_regrowingCrops.Keys);
+      foreach (var cropTile in growingCropKeys) {
+        _regrowingCrops[cropTile] -= Time.deltaTime;
+        if (_regrowingCrops[cropTile] <= 0) {
+          _baseTilemap.SetTile(cropTile, GetTileForCrop(cropTile));
+          _regrowingCrops.Remove(cropTile);
+        }
+      }
+    }
+
+    private void MaybeAddResourceRequest() {
+      _secsUntilNextRequest -= Time.deltaTime;
+      if (_secsUntilNextRequest <= 0) {
+        // TODO game over here if too many requests?
+        SpawnNewResourceRequest();
+        _secsUntilNextRequest = requestFrequencySecs;
+      }
+    }
+
+    private void UpdateResourceRequests() {
       for (int i = 0; i < OutstandingRequests.Length; i++) {
         if (OutstandingRequests[i] != null) {
           OutstandingRequests[i].Update();
-          _marketStands[i].UpdateVisuals(
-              OutstandingRequests[i].RequestedResource, OutstandingRequests[i].TimeRemainingSecs);
+          _marketStands[i]
+              .UpdateVisuals(
+                  OutstandingRequests[i].RequestedResource, OutstandingRequests[i].TimeRemainingSecs);
           if (OutstandingRequests[i].TimeRemainingSecs <= 0f) {
             OutstandingRequests[i] = null;
             // BIG TODO actually handle a request expiring
@@ -58,13 +87,6 @@ namespace Game {
         } else {
           _marketStands[i].UpdateVisuals(CropType.None, 0f);
         }
-      }
-
-      _secsUntilNextRequest -= Time.deltaTime;
-      if (_secsUntilNextRequest <= 0) {
-        // TODO game over here if too many requests?
-        SpawnNewResourceRequest();
-        _secsUntilNextRequest = requestFrequencySecs;
       }
     }
 
@@ -99,7 +121,7 @@ namespace Game {
 
     public CropType GetCropAtWorldPosition(Vector3 position) {
       var coordsUnderCar = _baseTilemap.WorldToCell(position);
-      if (_collectedCrops.Contains(coordsUnderCar)) {
+      if (_regrowingCrops.Keys.Contains(coordsUnderCar)) {
         return CropType.None;
       }
       
@@ -140,8 +162,34 @@ namespace Game {
       } else if (type == CropType.Grape) {
         _baseTilemap.SetTile(coords, emptyGrapeTile);
       }
-      // BIG TODO: crop regeneration
-      _collectedCrops.Add(_baseTilemap.WorldToCell(position));
+      
+      _regrowingCrops.Add(
+          _baseTilemap.WorldToCell(position), cropRegrowthTimeSecs);
+    }
+
+    private Tile GetTileForCrop(Vector3Int coords) {
+      var tile = _baseTilemap.GetTile<Tile>(coords);
+      if (tile == emptyCornTile) {
+        return cornTile;
+      }
+
+      if (tile == emptyPumpkinTile) {
+        return pumpkinTile;
+      }
+
+      if (tile == emptyGrapeTile) {
+        return grapeTile;
+      }
+
+      if (tile == emptyTomatoTile) {
+        return tomatoTile;
+      }
+    
+      if (tile == emptyWheatTile) {
+        return wheatTile;
+      }
+
+      return wheatTile;
     }
 
     public ResourceRequest GetRequestForMarketStand(GameObject marketObject) {

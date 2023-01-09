@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Game.Player;
-using UnityEditor.Experimental;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 namespace Game {
   public class PlayerController : MonoBehaviour, ITrainComponent {
