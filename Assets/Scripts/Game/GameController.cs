@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace Game {
@@ -28,6 +29,10 @@ namespace Game {
     // Maps growing crops to growth time remaining
     private readonly Dictionary<Vector3Int, float> _regrowingCrops = new();
     private MarketStand[] _marketStands;
+    private int _score;
+    private Text _scoreIndicator;
+    private int _missedOrders;
+    private Text _missedOrdersIndicator;
 
     public ResourceRequest[] OutstandingRequests { get; private set; }
 
@@ -42,6 +47,8 @@ namespace Game {
               .Select(x => x.GetComponent<MarketStand>()).ToArray();
       OutstandingRequests = new ResourceRequest[_marketStands.Length];
       _secsUntilNextRequest = requestFrequencySecs;
+      _scoreIndicator = GameObject.FindWithTag("Score").GetComponent<Text>();
+      _missedOrdersIndicator = GameObject.FindWithTag("MissedOrders").GetComponent<Text>();
       
       // Always start with corn
       SpawnNewResourceRequest(CropType.Corn);
@@ -51,6 +58,8 @@ namespace Game {
       UpdateResourceRequests();
       MaybeAddResourceRequest();
       UpdateCropRegrowth();
+      _scoreIndicator.text = $"Score: {_score}";
+      _missedOrdersIndicator.text = $"Missed Orders: {_missedOrders}";
     }
 
     private void UpdateCropRegrowth() {
@@ -82,7 +91,10 @@ namespace Game {
                   OutstandingRequests[i].RequestedResource, OutstandingRequests[i].TimeRemainingSecs);
           if (OutstandingRequests[i].TimeRemainingSecs <= 0f) {
             OutstandingRequests[i] = null;
-            // BIG TODO actually handle a request expiring
+            _missedOrders++;
+            _score -= requestSecs;
+            // TODO actually handle a request expiring
+            //    in a way that is meaningful.
           }
         } else {
           _marketStands[i].UpdateVisuals(CropType.None, 0f);
@@ -211,6 +223,7 @@ namespace Game {
 
     public void FulfillRequest(ResourceRequest request) {
       OutstandingRequests[request.RequestingMarketStandIndex] = null;
+      _score += (int)request.TimeRemainingSecs;
       // BIG TODO make this mean something
     }
   }

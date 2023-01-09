@@ -8,6 +8,8 @@ TagManager:
   - Boxcar
   - MarketStand
   - RequestContainer
+  - Score
+  - MissedOrders
   layers:
   - Default
   - TransparentFX
